@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdant Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b120f;
+  --line: rgba(242, 234, 223, 0.12);
+  --line-strong: rgba(242, 234, 223, 0.18);
+  --text: #f2eadf;
+  --muted: rgba(242, 234, 223, 0.72);
+  --muted-soft: rgba(242, 234, 223, 0.5);
+  --sage: #8ea77d;
+  --brass: #b8925e;
+  --shadow: 0 26px 80px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.24);
+  --radius-large: 34px;
+  --radius-medium: 28px;
+  --content-width: min(1180px, calc(100vw - 48px));
+  --display: "Cormorant Garamond", Georgia, serif;
+  --sans: "Manrope", sans-serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(142, 167, 125, 0.14), transparent 34%),
+    radial-gradient(circle at 85% 8%, rgba(184, 146, 94, 0.12), transparent 24%),
+    linear-gradient(180deg, #09100d 0%, #0b120f 22%, #0f1713 52%, #0a100d 100%);
+  min-width: 320px;
+  cursor: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 0.7px, transparent 0.7px);
+  background-size: 20px 20px;
+  opacity: 0.12;
+  z-index: -2;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: none;
+}
+
+button {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: none;
+}
+
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--sage);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), background 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+#cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(142, 167, 125, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+}
+
+body:has(.btn:hover) #cursor,
+body:has(a:hover) #cursor {
+  width: 40px;
+  height: 40px;
+  background: var(--brass);
+}
+
+body:has(.menu-card:hover) #cursor {
+  width: 60px;
+  height: 60px;
+}
+
+.site-shell {
+  overflow: clip;
+}
+
+.wrap {
+  width: var(--content-width);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--sage);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}
+
+.section-head {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 46px;
+}
+
+.section-head.compact {
+  margin-bottom: 30px;
+}
+
+.section-head h2,
+.section-head h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 4vw, 4rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.section-head p {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--muted);
+  line-height: 1.88;
+}
+
+.section {
+  padding: 112px 0;
+}
+
+.soft-section {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 26px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.32s var(--ease),
+    background-color 0.32s var(--ease),
+    border-color 0.32s var(--ease),
+    color 0.32s var(--ease),
+    box-shadow 0.32s var(--ease);
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--text);
+  color: #121916;
+  box-shadow: 0 14px 30px rgba(242, 234, 223, 0.11);
+}
+
+.btn-primary:hover {
+  background: #ffffff;
+}
+
+.btn-secondary {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(184, 146, 94, 0.4);
+  background: rgba(184, 146, 94, 0.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+}
+
+.btn-ghost {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(18px);
+  background: linear-gradient(180deg, rgba(8, 12, 10, 0.9), rgba(8, 12, 10, 0.64));
+  border-bottom: 1px solid rgba(242, 234, 223, 0.08);
+}
+
+.site-nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 82px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.brand-mark {
+  color: var(--sage);
+  font-size: 0.9rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  color: var(--muted-soft);
+  font-size: 0.88rem;
+}
+
+.nav-links a {
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-button {
+  position: relative;
+  padding-right: 18px;
+}
+
+.cart-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--brass);
+  color: #111713;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.hero {
+  padding: 54px 0 96px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 52px;
+  align-items: center;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-copy h1 {
+  margin: 0 0 18px;
+  font-family: var(--display);
+  font-size: clamp(3.7rem, 7vw, 6.6rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+}
+
+.hero-copy h1 span {
+  display: block;
+  color: #d5c4ad;
+}
+
+.hero-copy p {
+  margin: 0 0 32px;
+  max-width: 33rem;
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.92;
+}
+
+.hero-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 44px;
+}
+
+.hero-stat {
+  padding: 20px 20px 18px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.hero-stat strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.77rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.hero-stat span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.hero-media {
+  position: relative;
+  min-height: 736px;
+}
+
+.hero-main-photo {
+  position: absolute;
+  inset: 0 0 0 60px;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(242, 234, 223, 0.11);
+}
+
+.hero-main-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(7, 9, 8, 0.26)),
+    linear-gradient(90deg, rgba(7, 10, 8, 0.18), transparent 50%);
+}
+
+.hero-main-photo img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.hero-inset {
+  position: absolute;
+  left: 0;
+  bottom: 28px;
+  width: min(46%, 300px);
+  padding: 12px;
+  border-radius: var(--radius-medium);
+  background: rgba(12, 18, 14, 0.88);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-inset img {
+  height: 320px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 18px;
+}
+
+.hero-caption {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  max-width: 248px;
+  padding: 17px 18px;
+  border-radius: 18px;
+  background: rgba(8, 10, 9, 0.74);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.hero-caption strong,
+.mini-note strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.hero-caption span,
+.mini-note span {
+  display: block;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.88rem;
+}
+
+.mini-note {
+  position: absolute;
+  top: 28px;
+  left: 90px;
+  max-width: 240px;
+  padding: 15px 18px;
+  border-radius: 18px;
+  background: rgba(12, 17, 14, 0.8);
+  border: 1px solid rgba(242, 234, 223, 0.09);
+  backdrop-filter: blur(10px);
+}
+.signature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.signature-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-medium);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.42s var(--ease),
+    border-color 0.42s var(--ease),
+    box-shadow 0.42s var(--ease);
+}
+
+.signature-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(184, 146, 94, 0.22);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.26);
+}
+
+.signature-figure {
+  position: relative;
+  aspect-ratio: 0.86;
+  overflow: hidden;
+}
+
+.signature-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(8, 12, 10, 0.18));
+}
+
+.signature-figure img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease);
+}
+
+.signature-card:hover .signature-figure img {
+  transform: scale(1.06);
+}
+
+.signature-tag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(8, 12, 10, 0.74);
+  border: 1px solid rgba(242, 234, 223, 0.12);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.signature-body {
+  display: grid;
+  gap: 16px;
+  padding: 26px;
+}
+
+.signature-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.signature-topline h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.85rem;
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.signature-price {
+  color: var(--brass);
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.signature-body p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.84;
+}
+
+.signature-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.signature-link {
+  color: var(--sage);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.add-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(242, 234, 223, 0.08);
+  border: 1px solid rgba(242, 234, 223, 0.12);
+  font-size: 1.2rem;
+  line-height: 1;
+  transition:
+    transform 0.32s var(--ease),
+    background-color 0.32s var(--ease),
+    border-color 0.32s var(--ease),
+    color 0.32s var(--ease);
+  cursor: pointer;
+}
+
+.add-button:hover,
+.add-button.added {
+  background: var(--text);
+  border-color: var(--text);
+  color: #111713;
+  transform: scale(1.06);
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 52px;
+  align-items: center;
+}
+
+.story-visual {
+  position: relative;
+  min-height: 660px;
+}
+
+.story-main {
+  position: absolute;
+  inset: 0 48px 0 0;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: var(--shadow);
+}
+
+.story-main img,
+.story-detail img,
+.experience-photo img,
+.reservation-photo img,
+.footer-photo img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-main img {
+  object-position: center center;
+}
+
+.story-main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 12, 10, 0), rgba(8, 12, 10, 0.16));
+}
+
+.story-detail {
+  position: absolute;
+  right: 0;
+  bottom: 34px;
+  width: min(40%, 220px);
+  height: 270px;
+  padding: 12px;
+  border-radius: var(--radius-medium);
+  background: rgba(11, 16, 13, 0.9);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: var(--shadow-soft);
+}
+
+.story-detail img {
+  border-radius: 18px;
+  object-position: center center;
+}
+
+.story-copy {
+  display: grid;
+  gap: 20px;
+}
+
+.story-copy h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 4vw, 4.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.story-copy p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.9;
+  max-width: 56ch;
+}
+
+.story-note {
+  padding: 26px 28px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(142, 167, 125, 0.11), rgba(142, 167, 125, 0.03));
+  border: 1px solid rgba(142, 167, 125, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.story-note p {
+  color: var(--text);
+}
+
+.story-points {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.story-point {
+  padding: 20px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(242, 234, 223, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.story-point strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.76rem;
+  color: var(--sage);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.story-point span {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.88rem;
+}
+
+.menu-shell {
+  border-radius: 34px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 234, 223, 0.08);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.menu-toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 18px 18px 16px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(242, 234, 223, 0.08);
+  scrollbar-width: none;
+}
+
+.menu-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-tab {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-tab.active {
+  background: rgba(242, 234, 223, 0.92);
+  color: #0f1713;
+}
+
+.menu-tab:not(.active) {
+  border-color: rgba(242, 234, 223, 0.08);
+}
+
+.menu-content {
+  padding: 30px 30px 32px;
+}
+
+.menu-section {
+  display: none;
+}
+
+.menu-section.active {
+  display: block;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.menu-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: start;
+  padding: 22px 22px 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(242, 234, 223, 0.075);
+  transition:
+    transform 0.32s ease,
+    border-color 0.32s ease,
+    background-color 0.32s ease,
+    box-shadow 0.32s ease;
+}
+
+.menu-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(184, 146, 94, 0.2);
+  background: rgba(255, 255, 255, 0.038);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16);
+}
+
+.menu-row-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.menu-row h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.45rem;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.menu-row .price {
+  color: var(--brass);
+  font-size: 0.96rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.menu-row p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+  font-size: 0.92rem;
+}
+
+.menu-row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 92px;
+}
+
+.menu-row-label {
+  color: var(--sage);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 30px;
+}
+
+.experience-photo {
+  position: relative;
+  min-height: 620px;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: var(--shadow);
+}
+
+.experience-photo img {
+  object-position: center center;
+}
+
+.experience-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.2)),
+    linear-gradient(0deg, rgba(7, 11, 9, 0.58), transparent 42%);
+}
+
+.experience-note {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1;
+  padding: 20px 22px;
+  border-radius: 22px;
+  background: rgba(8, 11, 9, 0.7);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.experience-note strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sage);
+}
+
+.experience-note span {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.experience-list {
+  display: grid;
+  gap: 18px;
+}
+
+.experience-card {
+  display: grid;
+  gap: 12px;
+  padding: 30px;
+  border-radius: var(--radius-medium);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 234, 223, 0.09);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.32s var(--ease),
+    border-color 0.32s var(--ease),
+    box-shadow 0.32s var(--ease);
+}
+
+.experience-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 146, 94, 0.2);
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.22);
+}
+
+.experience-card strong {
+  color: var(--sage);
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.experience-card h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 2rem;
+  line-height: 0.98;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.experience-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.85;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.quote-card {
+  display: grid;
+  gap: 18px;
+  padding: 30px;
+  border-radius: var(--radius-medium);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(242, 234, 223, 0.09);
+  box-shadow: var(--shadow-soft);
+}
+
+.quote-mark {
+  font-family: var(--display);
+  font-size: 3rem;
+  line-height: 0.7;
+  color: var(--brass);
+}
+
+.quote-card p {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.82;
+}
+
+.quote-meta {
+  display: grid;
+  gap: 4px;
+}
+
+.quote-meta strong {
+  font-size: 0.92rem;
+}
+
+.quote-meta span {
+  color: var(--muted-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.reservation-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 32px;
+  align-items: stretch;
+}
+
+.reservation-photo {
+  position: relative;
+  min-height: 680px;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  box-shadow: var(--shadow);
+}
+
+.reservation-photo img {
+  object-position: center center;
+}
+
+.reservation-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(7, 10, 8, 0.16)),
+    linear-gradient(0deg, rgba(7, 11, 9, 0.8), transparent 45%);
+}
+
+.reservation-copy {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 28px;
+  z-index: 1;
+  display: grid;
+  gap: 16px;
+}
+
+.reservation-copy h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.1rem, 3.8vw, 3.4rem);
+  line-height: 0.96;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.reservation-copy p {
+  margin: 0;
+  color: rgba(242, 234, 223, 0.8);
+  line-height: 1.82;
+  max-width: 34rem;
+}
+
+.reservation-list {
+  display: grid;
+  gap: 14px;
+  max-width: 34rem;
+}
+
+.reservation-item {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: rgba(8, 11, 9, 0.56);
+  border: 1px solid rgba(242, 234, 223, 0.1);
+}
+
+.reservation-item strong {
+  color: var(--sage);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.reservation-item span {
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.reservation-form {
+  padding: 38px;
+  border-radius: 34px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 234, 223, 0.09);
+  box-shadow: var(--shadow-soft);
+}
+
+.reservation-form h3 {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-size: 2.5rem;
+  line-height: 0.96;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.reservation-form > p {
+  margin: 0 0 30px;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 36ch;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  color: var(--muted-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid rgba(242, 234, 223, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  padding: 15px 16px;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: rgba(184, 146, 94, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(184, 146, 94, 0.08);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(242, 234, 223, 0.42);
+}
+
+.field select option {
+  color: #101612;
+}
+
+.footer {
+  padding: 8px 0 42px;
+}
+
+.footer-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 32px;
+  padding: 30px;
+  border-radius: 34px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 234, 223, 0.09);
+  box-shadow: var(--shadow-soft);
+}
+
+.footer-photo {
+  min-height: 300px;
+  overflow: hidden;
+  border-radius: 26px;
+  border: 1px solid rgba(242, 234, 223, 0.08);
+}
+
+.footer-photo img {
+  object-position: center center;
+}
+
+.footer-content {
+  display: grid;
+  align-content: space-between;
+  gap: 28px;
+}
+
+.footer-top {
+  display: grid;
+  gap: 16px;
+}
+
+.footer-top h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  line-height: 0.95;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.footer-top p {
+  margin: 0;
+  max-width: 54ch;
+  color: var(--muted);
+  line-height: 1.82;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  color: var(--muted);
+}
+
+.footer-links a:hover {
+  color: var(--text);
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(242, 234, 223, 0.08);
+  color: var(--muted-soft);
+  font-size: 0.84rem;
+}
+
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 6, 0);
+  backdrop-filter: blur(0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    background-color 0.35s ease,
+    backdrop-filter 0.35s ease;
+  z-index: 60;
+}
+
+.cart-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(5, 8, 6, 0.52);
+  backdrop-filter: blur(10px);
+}
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(420px, 100vw);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  background: rgba(10, 15, 12, 0.96);
+  border-left: 1px solid rgba(242, 234, 223, 0.08);
+  transition: transform 0.42s var(--ease);
+  z-index: 61;
+}
+
+.cart-panel.open {
+  transform: translateX(0);
+}
+
+.cart-head,
+.cart-foot {
+  padding: 24px;
+  border-bottom: 1px solid rgba(242, 234, 223, 0.08);
+}
+
+.cart-foot {
+  margin-top: auto;
+  border-top: 1px solid rgba(242, 234, 223, 0.08);
+  border-bottom: 0;
+}
+
+.cart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-head h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.close-cart {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(242, 234, 223, 0.12);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.cart-items {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 24px 24px;
+}
+
+.cart-empty {
+  padding: 26px;
+  border-radius: 24px;
+  border: 1px dashed rgba(242, 234, 223, 0.12);
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.cart-item {
+  display: grid;
+  gap: 10px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(242, 234, 223, 0.08);
+}
+
+.cart-item:last-child {
+  border-bottom: 0;
+}
+
+.cart-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.cart-item-top strong {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.cart-item-top span {
+  color: var(--brass);
+  font-weight: 700;
+}
+
+.cart-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 0.88rem;
+}
+
+.remove-item {
+  padding: 0;
+  color: var(--sage);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cart-summary {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+}
+
+.cart-summary-row.total {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translate(-50%, 18px);
+  padding: 14px 18px;
+  border-radius: 999px;
+  background: rgba(12, 17, 14, 0.92);
+  border: 1px solid rgba(242, 234, 223, 0.12);
+  color: var(--text);
+  font-size: 0.88rem;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+  z-index: 80;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.75s var(--ease),
+    transform 0.75s var(--ease);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1100px) {
+  .hero-grid,
+  .story-grid,
+  .experience-grid,
+  .reservation-shell,
+  .footer-card {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-media,
+  .story-visual {
+    min-height: 640px;
+  }
+
+  .hero-copy {
+    max-width: 46rem;
+  }
+
+  .hero-main-photo {
+    inset: 0 0 0 0;
+  }
+
+  .mini-note {
+    left: 24px;
+  }
+
+  .experience-photo {
+    min-height: 520px;
+  }
+
+  .reservation-photo {
+    min-height: 560px;
+  }
+
+  .signature-grid,
+  .testimonials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .site-nav .wrap {
+    min-height: 72px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 30px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(3.2rem, 14vw, 5rem);
+  }
+
+  .section-head {
+    margin-bottom: 36px;
+  }
+
+  .hero-meta,
+  .story-points,
+  .form-grid,
+  .signature-grid,
+  .menu-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-media {
+    min-height: 560px;
+  }
+
+  .hero-copy p,
+  .story-copy p,
+  .reservation-copy p,
+  .footer-top p {
+    max-width: none;
+  }
+
+  .hero-inset {
+    width: 210px;
+  }
+
+  .hero-inset img {
+    height: 240px;
+  }
+
+  .story-visual {
+    min-height: 520px;
+  }
+
+  .story-main {
+    inset: 0 24px 0 0;
+  }
+
+  .menu-content,
+  .reservation-form {
+    padding: 22px;
+  }
+
+  .section {
+    padding: 84px 0;
+  }
+
+  .menu-row-actions {
+    min-width: 84px;
+  }
+
+  .footer-photo {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --content-width: min(100vw - 28px, 100%);
+  }
+
+  .hero-caption,
+  .mini-note {
+    position: static;
+    max-width: none;
+    margin-top: 16px;
+  }
+
+  .hero-media {
+    min-height: auto;
+    display: grid;
+    gap: 16px;
+  }
+
+  .button-row {
+    gap: 12px;
+  }
+
+  .hero-main-photo,
+  .hero-inset {
+    position: static;
+    width: 100%;
+  }
+
+  .hero-main-photo {
+    height: 420px;
+  }
+
+  .hero-inset {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .hero-inset img {
+    height: 240px;
+    border-radius: 24px;
+    border: 1px solid rgba(242, 234, 223, 0.1);
+  }
+
+  .story-visual,
+  .experience-photo,
+  .reservation-photo {
+    min-height: auto;
+  }
+
+  .story-main,
+  .story-detail {
+    position: static;
+    width: 100%;
+  }
+
+  .story-main {
+    height: 420px;
+    margin-bottom: 16px;
+  }
+
+  .menu-row {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-row-top {
+    gap: 8px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .menu-row-actions {
+    width: 100%;
+    min-width: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu-row-label {
+    text-align: left;
+  }
+
+  .story-detail {
+    height: 220px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .story-detail img {
+    border-radius: 24px;
+    border: 1px solid rgba(242, 234, 223, 0.1);
+  }
+
+  .reservation-form {
+    padding: 20px;
+    border-radius: 28px;
+  }
+
+  .footer-card {
+    padding: 18px;
+  }
+
+  .quote-card,
+  .experience-card,
+  .signature-body {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .cart-head,
+  .cart-foot,
+  .cart-items {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="site-shell">
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#hero">
+        <span>Verdant</span>
+        <span class="brand-mark">Cafe</span>
+      </a>
+      <div class="nav-links">
+        <a href="#featured">Signatures</a>
+        <a href="#story">Story</a>
+        <a href="#menu">Full Menu</a>
+        <a href="#reservation">Reserve</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="#reservation">Book</a>
+        <button class="btn btn-secondary cart-button" type="button" id="cart-button">
+          Order
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero section" id="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">Botanical luxury cafe</div>
+          <h1>
+            A slower table
+            <span>for coffee, breakfast,</span>
+            <span>and late light.</span>
+          </h1>
+          <p>
+            Verdant is an all-day cafe shaped around house-made drinks, seasonal plates, and the kind of room that
+            makes people stay for one more round. Warm service, restrained menus, and photographs worth their own space.
+          </p>
+          <div class="button-row">
+            <a class="btn btn-primary" href="#reservation">Reserve a table</a>
+            <a class="btn btn-secondary" href="#menu">Browse the menu</a>
+          </div>
+          <div class="hero-meta">
+            <div class="hero-stat">
+              <strong>Morning service</strong>
+              <span>Fresh pastry, slow coffee, and breakfast from 7:30 every day.</span>
+            </div>
+            <div class="hero-stat">
+              <strong>Signature pour</strong>
+              <span>House spiced latte, cold brew, and seasonal afternoon drinks.</span>
+            </div>
+            <div class="hero-stat">
+              <strong>Reservations</strong>
+              <span>Tables for quiet mornings, long lunches, and small celebrations.</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-media reveal">
+          <div class="hero-main-photo">
+            <img src="76fd12962ed0b18f93b1baa67f456a5a.jpg" alt="House spiced coffee with cream on a wooden table" loading="eager">
+            <div class="hero-caption">
+              <strong>House pour</strong>
+              <span>Espresso, warm spice, and a soft finish. Rich enough for a first order and calm enough for a second.</span>
+            </div>
+          </div>
+          <div class="mini-note">
+            <strong>Weekend table</strong>
+            <span>Brunch is built around small-batch syrups, warm plates, and a slower service rhythm.</span>
+          </div>
+          <div class="hero-inset">
+            <img src="1048ede08660212dca7266405767a122.jpg" alt="Pistachio hotcakes with caramelized banana" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-section" id="featured">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Selected favourites</div>
+          <h2>Three orders that define the room.</h2>
+          <p>
+            The signatures stay focused: one calm drink, one all-day plate, one dessert worth leaving space for.
+            Photography leads here on purpose, so the page feels like a real table instead of a concept board.
+          </p>
+        </div>
+        <div class="signature-grid" id="featured-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="story">
+      <div class="wrap story-grid">
+        <div class="story-visual reveal">
+          <div class="story-main">
+            <img src="acf11890f9ba9ba262a11521dde2bc2b.jpg" alt="Seasonal grain bowl with greens and roasted vegetables" loading="lazy">
+          </div>
+          <div class="story-detail">
+            <img src="aad94d0fd80a32ecb6d711dd22d7ca38.jpg" alt="Chocolate-glazed strawberry pastry close-up" loading="lazy">
+          </div>
+        </div>
+        <div class="story-copy">
+          <div class="section-head compact reveal">
+            <div class="eyebrow">Our story</div>
+            <h2>Built for people who notice the details.</h2>
+          </div>
+          <p class="reveal">
+            Verdant began as a small cafe with a short menu and a clear point of view: better ingredients, quieter service,
+            and enough room for a coffee to feel like a pause instead of a transaction.
+          </p>
+          <p class="reveal">
+            The kitchen still works that way. House syrups are made in small batches, the breakfast menu stays tight,
+            and each plate is designed to feel composed rather than crowded.
+          </p>
+          <div class="story-note reveal">
+            <p>
+              We keep the mood warm, the pacing unhurried, and the menu honest. It is less about novelty and more about
+              returning to the same table because it keeps getting the basics right.
+            </p>
+          </div>
+          <div class="story-points">
+            <div class="story-point reveal">
+              <strong>Breakfast</strong>
+              <span>Open from 7:30 with hotcakes, avocado toast, and a short pastry board.</span>
+            </div>
+            <div class="story-point reveal">
+              <strong>Afternoons</strong>
+              <span>Cold drinks, lighter plates, and slower tables for reading or meetings.</span>
+            </div>
+            <div class="story-point reveal">
+              <strong>Evenings</strong>
+              <span>Reservations stay intimate, with room for birthdays and small private dinners.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-section" id="menu">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Full menu</div>
+          <h2>The complete menu, kept in the background.</h2>
+          <p>
+            The tabbed menu stays for depth and usability, but the styling is intentionally quieter so the atmosphere
+            and photography remain the lead.
+          </p>
+        </div>
+        <div class="menu-shell reveal">
+          <div class="menu-toolbar" id="menu-tabs"></div>
+          <div class="menu-content" id="menu-content"></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="experience">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">The experience</div>
+          <h2>Calm service, generous timing, and a room that photographs well because it is actually considered.</h2>
+          <p>
+            These are the details that make Verdant feel believable: strong morning service, tables that work for both
+            solo coffee and company, and a menu that looks as composed as it tastes.
+          </p>
+        </div>
+        <div class="experience-grid">
+          <div class="experience-photo reveal">
+            <img src="aad94d0fd80a32ecb6d711dd22d7ca38.jpg" alt="Close-up pastry with chocolate glaze and strawberry filling" loading="lazy">
+            <div class="experience-note">
+              <strong>Afternoon mood</strong>
+              <span>Pastry service is plated to order, with enough restraint to feel premium rather than theatrical.</span>
+            </div>
+          </div>
+          <div class="experience-list">
+            <article class="experience-card reveal">
+              <strong>01</strong>
+              <h3>All-day cafe pacing</h3>
+              <p>
+                Coffee can arrive quickly; brunch is meant to slow down. The service model is built for guests who want to
+                stay longer without feeling rushed through the table.
+              </p>
+            </article>
+            <article class="experience-card reveal">
+              <strong>02</strong>
+              <h3>Menu with restraint</h3>
+              <p>
+                Rather than chase every trend, the menu stays edited. Signature drinks rotate seasonally while the core
+                breakfast and pastry orders remain dependable.
+              </p>
+            </article>
+            <article class="experience-card reveal">
+              <strong>03</strong>
+              <h3>Reservations that feel personal</h3>
+              <p>
+                Small group tables, celebration notes, and private requests are handled quietly. The frontend form stays
+                simple, but the presentation aims to feel like an actual hospitality brand.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-section" id="testimonials">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Guest notes</div>
+          <h2>What keeps people coming back.</h2>
+        </div>
+        <div class="testimonials-grid" id="testimonials-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="reservation">
+      <div class="wrap reservation-shell">
+        <div class="reservation-photo reveal">
+          <img src="193c4da49b3e38f0eb760704f233ee91.jpg" alt="Warm toast dessert with two scoops of ice cream" loading="lazy">
+          <div class="reservation-copy">
+            <div class="eyebrow">Reserve</div>
+            <h3>Book a table for breakfast, lunch, or a slower evening.</h3>
+            <p>
+              Reservations stay polished but straightforward here. Choose a time, share any notes, and we will keep the
+              table ready.
+            </p>
+            <div class="reservation-list">
+              <div class="reservation-item">
+                <strong>Hours</strong>
+                <span>Monday to Friday, 7:30 AM to 10:00 PM. Saturday and Sunday, 8:00 AM to 11:00 PM.</span>
+              </div>
+              <div class="reservation-item">
+                <strong>Address</strong>
+                <span>12 Botanical Lane, MG Road, Bengaluru 560001.</span>
+              </div>
+              <div class="reservation-item">
+                <strong>Contact</strong>
+                <span>+91 98765 43210 for reservations, private dining, and afternoon tables.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="reservation-form reveal" id="reservation-form">
+          <h3>Make a reservation</h3>
+          <p>A polished reservation touchpoint for breakfast dates, long lunches, and quieter evening tables.</p>
+          <div class="form-grid">
+            <div class="field">
+              <label for="first-name">First name</label>
+              <input id="first-name" name="firstName" type="text" placeholder="Aarav">
+            </div>
+            <div class="field">
+              <label for="last-name">Last name</label>
+              <input id="last-name" name="lastName" type="text" placeholder="Sharma">
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="aarav@email.com">
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210">
+            </div>
+            <div class="field">
+              <label for="reservation-date">Date</label>
+              <input id="reservation-date" name="date" type="date">
+            </div>
+            <div class="field">
+              <label for="reservation-time">Time</label>
+              <select id="reservation-time" name="time">
+                <option>7:30 AM</option>
+                <option>9:00 AM</option>
+                <option>11:00 AM</option>
+                <option>12:30 PM</option>
+                <option>2:00 PM</option>
+                <option>4:00 PM</option>
+                <option selected>6:00 PM</option>
+                <option>7:30 PM</option>
+                <option>9:00 PM</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="party-size">Party size</label>
+              <select id="party-size" name="party">
+                <option>1 guest</option>
+                <option>2 guests</option>
+                <option selected>3 to 4 guests</option>
+                <option>5 to 6 guests</option>
+                <option>7 to 10 guests</option>
+                <option>Private table inquiry</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="occasion">Occasion</label>
+              <select id="occasion" name="occasion">
+                <option selected>Just coffee</option>
+                <option>Breakfast</option>
+                <option>Lunch</option>
+                <option>Celebration</option>
+                <option>Private dining</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="notes">Notes</label>
+              <textarea id="notes" name="notes" placeholder="Window seat, dietary notes, birthday dessert, or anything else we should know."></textarea>
+            </div>
+            <div class="field full">
+              <button class="btn btn-primary" type="submit">Confirm reservation</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-card reveal">
+      <div class="footer-photo">
+        <img src="f673f6c2d7898a2f9d547a3502b3acd6.jpg" alt="Lavender iced latte on a light stone surface" loading="lazy">
+      </div>
+      <div class="footer-content">
+        <div class="footer-top">
+          <div class="eyebrow">Verdant cafe</div>
+          <h2>Photography first. Hospitality always.</h2>
+          <p>
+            A house for slow coffee, bright plates, and an all-day room that rewards a longer stay. Everything here is
+            composed to feel warm, quiet, and considered from the first pour to the final table.
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="#featured">Signatures</a>
+          <a href="#story">Story</a>
+          <a href="#menu">Menu</a>
+          <a href="#reservation">Reservations</a>
+        </div>
+        <div class="footer-bottom">
+          <span>Open daily in Bengaluru.</span>
+          <span>Verdant Cafe © 2026</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div class="cart-overlay" id="cart-overlay"></div>
+<aside class="cart-panel" id="cart-panel" aria-hidden="true">
+  <div class="cart-head">
+    <h3>Your order</h3>
+    <button class="close-cart" type="button" id="close-cart" aria-label="Close order panel">×</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-foot" id="cart-foot" hidden>
+    <div class="cart-summary">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <strong id="subtotal">₹0</strong>
+      </div>
+      <div class="cart-summary-row">
+        <span>Service</span>
+        <strong id="service">₹0</strong>
+      </div>
+      <div class="cart-summary-row total">
+        <span>Total</span>
+        <strong id="total">₹0</strong>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="button" id="checkout-button">Place order</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const FEATURED_ITEMS = [
+  {
+    name: "Lavender Iced Latte",
+    description: "Espresso, cold milk, and a gentle lavender finish that lands somewhere between afternoon coffee and dessert.",
+    price: 220,
+    tag: "Drink",
+    image: "f673f6c2d7898a2f9d547a3502b3acd6.jpg"
+  },
+  {
+    name: "Avocado Toast",
+    description: "Sourdough, whipped ricotta, layered avocado, chili oil, and enough texture to carry the whole plate.",
+    price: 260,
+    tag: "All-day plate",
+    image: "ff78b41a5330ed001dff936c580f2616.jpg"
+  },
+  {
+    name: "Matcha Cream Cake",
+    description: "A light matcha set with clean layers, soft cream, and a finish that feels quiet rather than sugary.",
+    price: 340,
+    tag: "Dessert",
+    image: "276476bd62e17a6d68eee4ad2da1ca95.jpg"
+  }
+];
+
+const FULL_MENU = [
+  {
+    id: "coffee",
+    label: "Coffee",
+    items: [
+      { name: "House Espresso", description: "A short, dark pull with a soft cocoa finish.", price: 130, note: "Single origin" },
+      { name: "Flat White", description: "Double ristretto with polished microfoam.", price: 170, note: "Morning" },
+      { name: "Lavender Iced Latte", description: "Cold espresso, milk, and a restrained floral note.", price: 220, note: "Signature" },
+      { name: "House Spiced Latte", description: "Espresso with warm spice, cream, and a richer body.", price: 240, note: "Best seller" },
+      { name: "Cold Brew Reserve", description: "Slow steeped and served over clear ice.", price: 210, note: "Afternoon" },
+      { name: "Saffron Milk Tea", description: "Warm milk tea finished with saffron and cardamom.", price: 190, note: "Soft pour" }
+    ]
+  },
+  {
+    id: "breakfast",
+    label: "Breakfast",
+    items: [
+      { name: "Pistachio Hotcakes", description: "Stacked pancakes with pistachio cream, caramelized banana, and light syrup.", price: 320, note: "Weekend" },
+      { name: "Avocado Toast", description: "Sourdough, ricotta, avocado, chili oil, and sea salt.", price: 260, note: "Daily" },
+      { name: "Ricotta Toast", description: "Honey, whipped ricotta, and citrus peel on grilled bread.", price: 240, note: "Light" },
+      { name: "Fruit and Grain Bowl", description: "Seasonal fruit, quinoa, yogurt, and toasted seeds.", price: 250, note: "Fresh" },
+      { name: "Herb Eggs on Sourdough", description: "Soft eggs, browned butter herbs, and a small salad.", price: 280, note: "Brunch" },
+      { name: "House Croissant", description: "Butter layered and served warm with jam.", price: 160, note: "Pastry" }
+    ]
+  },
+  {
+    id: "plates",
+    label: "Plates",
+    items: [
+      { name: "Seasonal Bowl", description: "Grains, roasted vegetables, greens, and sesame dressing.", price: 310, note: "Kitchen" },
+      { name: "Roast Pumpkin Plate", description: "Pumpkin, tahini, herbs, and warm grains.", price: 290, note: "Lunch" },
+      { name: "Mushroom Tartine", description: "Toasted bread, mushrooms, soft herbs, and parmesan.", price: 270, note: "Favourites" },
+      { name: "Burrata Greens", description: "Leaves, burrata, citrus, and toasted seeds.", price: 300, note: "Light" },
+      { name: "Warm Tomato Rigatoni", description: "Slow tomato sauce, basil, and shaved hard cheese.", price: 340, note: "Evening" },
+      { name: "Roasted Halloumi Salad", description: "Greens, roast vegetables, and house vinaigrette.", price: 320, note: "All day" }
+    ]
+  },
+  {
+    id: "dessert",
+    label: "Dessert",
+    items: [
+      { name: "Matcha Cream Cake", description: "Layered matcha dessert with a clean, soft finish.", price: 340, note: "House dessert" },
+      { name: "Strawberry Creme Pastry", description: "Chocolate glaze, fresh strawberry, and cool cream filling.", price: 310, note: "Pastry" },
+      { name: "Brioche Toast Sundae", description: "Warm toast finished with ice cream and caramel.", price: 330, note: "For two" },
+      { name: "Dark Chocolate Slice", description: "Dense chocolate layer with whipped cream.", price: 290, note: "Rich" },
+      { name: "Citrus Olive Cake", description: "Tender crumb, soft glaze, and bitter orange peel.", price: 260, note: "House bake" },
+      { name: "Vanilla Cream Tart", description: "Short crust pastry with vanilla bean filling.", price: 280, note: "Counter" }
+    ]
+  }
+];
+
+const TESTIMONIALS = [
+  { quote: "The coffee feels considered, not showy, and the room is calm enough to actually stay for breakfast.", name: "Naina Rao", source: "Regular guest" },
+  { quote: "Verdant gets the small things right: warm plates, well-paced service, and desserts that still feel elegant.", name: "Rahul Kapoor", source: "Weekend table" },
+  { quote: "It has the polish of a premium cafe without the noise. The reservation flow feels simple and the place feels real.", name: "Mira Sen", source: "Private dinner booking" }
+];
+
+const featuredGrid = document.getElementById("featured-grid");
+const menuTabs = document.getElementById("menu-tabs");
+const menuContent = document.getElementById("menu-content");
+const testimonialsGrid = document.getElementById("testimonials-grid");
+const cartPanel = document.getElementById("cart-panel");
+const cartOverlay = document.getElementById("cart-overlay");
+const cartButton = document.getElementById("cart-button");
+const closeCartButton = document.getElementById("close-cart");
+const cartItems = document.getElementById("cart-items");
+const cartFoot = document.getElementById("cart-foot");
+const cartCount = document.getElementById("cart-count");
+const subtotal = document.getElementById("subtotal");
+const service = document.getElementById("service");
+const total = document.getElementById("total");
+const checkoutButton = document.getElementById("checkout-button");
+const reservationForm = document.getElementById("reservation-form");
+const reservationDate = document.getElementById("reservation-date");
+const toast = document.getElementById("toast");
+const cursor = document.getElementById("cursor");
+const ring = document.getElementById("cursor-ring");
+
+let cart = [];
+let toastTimer;
+let mx = 0;
+let my = 0;
+let rx = 0;
+let ry = 0;
+
+function formatRupees(amount) {
+  return `₹${amount}`;
+}
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+}
+
+function openCart() {
+  cartPanel.classList.add("open");
+  cartOverlay.classList.add("open");
+  cartPanel.setAttribute("aria-hidden", "false");
+}
+
+function closeCart() {
+  cartPanel.classList.remove("open");
+  cartOverlay.classList.remove("open");
+  cartPanel.setAttribute("aria-hidden", "true");
+}
+
+function updateCart() {
+  cartCount.textContent = cart.length;
+
+  if (!cart.length) {
+    cartItems.innerHTML = '<div class="cart-empty">Your order is empty for now. Add something from the signatures or full menu to build a table.</div>';
+    cartFoot.hidden = true;
+    return;
+  }
+
+  cartItems.innerHTML = cart.map((item) => `
+    <div class="cart-item">
+      <div class="cart-item-top">
+        <strong>${item.name}</strong>
+        <span>${formatRupees(item.price)}</span>
+      </div>
+      <p>${item.description}</p>
+      <button class="remove-item" type="button" data-remove="${item.id}">Remove</button>
+    </div>
+  `).join("");
+
+  const subtotalValue = cart.reduce((sum, item) => sum + item.price, 0);
+  const serviceValue = Math.round(subtotalValue * 0.05);
+  subtotal.textContent = formatRupees(subtotalValue);
+  service.textContent = formatRupees(serviceValue);
+  total.textContent = formatRupees(subtotalValue + serviceValue);
+  cartFoot.hidden = false;
+}
+
+function addToCart(item, button) {
+  cart.push({
+    ...item,
+    id: `${item.name}-${Date.now()}-${Math.random().toString(16).slice(2)}`
+  });
+  updateCart();
+  button.classList.add("added");
+  button.textContent = "✓";
+  showToast(`${item.name} added to your order.`);
+  setTimeout(() => {
+    button.classList.remove("added");
+    button.textContent = "+";
+  }, 1100);
+}
+
+function renderFeatured() {
+  featuredGrid.innerHTML = FEATURED_ITEMS.map((item, index) => `
+    <article class="signature-card menu-card reveal" style="transition-delay:${index * 0.08}s">
+      <figure class="signature-figure">
+        <img src="${item.image}" alt="${item.name}" loading="lazy">
+        <div class="signature-tag">${item.tag}</div>
+      </figure>
+      <div class="signature-body">
+        <div class="signature-topline">
+          <h3>${item.name}</h3>
+          <span class="signature-price">${formatRupees(item.price)}</span>
+        </div>
+        <p>${item.description}</p>
+        <div class="signature-action">
+          <span class="signature-link">Add to order</span>
+          <button class="add-button" type="button" data-featured="${item.name}" aria-label="Add ${item.name} to order">+</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderMenu() {
+  menuTabs.innerHTML = FULL_MENU.map((section, index) => `
+    <button class="menu-tab ${index === 0 ? "active" : ""}" type="button" data-tab="${section.id}">
+      ${section.label}
+    </button>
+  `).join("");
+
+  menuContent.innerHTML = FULL_MENU.map((section, index) => `
+    <section class="menu-section ${index === 0 ? "active" : ""}" id="menu-${section.id}">
+      <div class="menu-grid">
+        ${section.items.map((item) => `
+          <article class="menu-row menu-card reveal">
+            <div>
+              <div class="menu-row-top">
+                <h3>${item.name}</h3>
+                <span class="price">${formatRupees(item.price)}</span>
+              </div>
+              <p>${item.description}</p>
+            </div>
+            <div class="menu-row-actions">
+              <span class="menu-row-label">${item.note}</span>
+              <button class="add-button" type="button" data-menu="${item.name}" aria-label="Add ${item.name} to order">+</button>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    </section>
+  `).join("");
+}
+
+function renderTestimonials() {
+  testimonialsGrid.innerHTML = TESTIMONIALS.map((item, index) => `
+    <article class="quote-card reveal" style="transition-delay:${index * 0.08}s">
+      <div class="quote-mark">“</div>
+      <p>${item.quote}</p>
+      <div class="quote-meta">
+        <strong>${item.name}</strong>
+        <span>${item.source}</span>
+      </div>
+    </article>
+  `).join("");
+}
+function observeReveals() {
+  const elements = document.querySelectorAll(".reveal:not(.visible)");
+  elements.forEach((element) => revealObserver.observe(element));
+}
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.18 });
+
+document.addEventListener("click", (event) => {
+  const featuredButton = event.target.closest("[data-featured]");
+  if (featuredButton) {
+    const item = FEATURED_ITEMS.find((entry) => entry.name === featuredButton.dataset.featured);
+    if (item) {
+      addToCart(item, featuredButton);
+    }
+  }
+
+  const menuButton = event.target.closest("[data-menu]");
+  if (menuButton) {
+    const item = FULL_MENU.flatMap((section) => section.items).find((entry) => entry.name === menuButton.dataset.menu);
+    if (item) {
+      addToCart(item, menuButton);
+    }
+  }
+
+  const removeButton = event.target.closest("[data-remove]");
+  if (removeButton) {
+    cart = cart.filter((item) => item.id !== removeButton.dataset.remove);
+    updateCart();
+  }
+
+  const menuTab = event.target.closest("[data-tab]");
+  if (menuTab) {
+    document.querySelectorAll(".menu-tab").forEach((button) => button.classList.toggle("active", button === menuTab));
+    document.querySelectorAll(".menu-section").forEach((section) => {
+      section.classList.toggle("active", section.id === `menu-${menuTab.dataset.tab}`);
+    });
+    observeReveals();
+  }
+});
+
+cartButton.addEventListener("click", openCart);
+closeCartButton.addEventListener("click", closeCart);
+cartOverlay.addEventListener("click", closeCart);
+
+checkoutButton.addEventListener("click", () => {
+  cart = [];
+  updateCart();
+  closeCart();
+  showToast("Order placed. We will have it ready at the counter.");
+});
+
+reservationForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const firstName = document.getElementById("first-name").value.trim() || "Guest";
+  showToast(`Reservation request received for ${firstName}.`);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeCart();
+  }
+});
+
+document.addEventListener("mousemove", (event) => {
+  mx = event.clientX;
+  my = event.clientY;
+  cursor.style.left = `${mx}px`;
+  cursor.style.top = `${my}px`;
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = `${rx}px`;
+  ring.style.top = `${ry}px`;
+  requestAnimationFrame(animateRing);
+}
+
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+const minDate = new Date().toISOString().split("T")[0];
+reservationDate.min = minDate;
+reservationDate.value = tomorrow.toISOString().split("T")[0];
+
+renderFeatured();
+renderMenu();
+renderTestimonials();
+updateCart();
+observeReveals();
+animateRing();
+</script>
+</body>
+</html>
